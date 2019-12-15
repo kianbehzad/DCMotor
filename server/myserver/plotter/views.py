@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from datetime import datetime, timezone, timedelta
 from .models import Experiment, Properties
+import json
+from rest_framework.response import Response
 # Create your views here.
 
 def plotter(request):
@@ -33,5 +35,18 @@ def data(request):
     pk = request.GET.get('pk')
     pk = -1 if pk == None else int(pk)
     if pk == -1:
-        return
+        return HttpResponse("NO PK")
 
+    the_exp = None
+    for exp in Experiment.objects.all():
+        if exp.pk == pk:
+            the_exp = exp
+    if the_exp is None:
+        return HttpResponse("INVALID PK")
+
+    dict = {"speeds": [], 'positions': []}
+    for prop in the_exp.all_properties.all():
+        dict["speeds"].append(prop.speed)
+        dict["positions"].append(prop.position)
+
+    return HttpResponse(json.dumps(dict), content_type="application/json")
