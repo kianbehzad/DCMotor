@@ -1,5 +1,7 @@
 from django.db import models
-from datetime import datetime
+from datetime import datetime, timedelta
+from dateutil import tz
+
 # Create your models here.
 
 
@@ -8,7 +10,7 @@ class Experiment(models.Model):
     Datetime = models.DateTimeField()
 
     def __str__(self):
-        return str(self.Datetime)
+        return str(self.Datetime + timedelta(hours=3, minutes=30))
 
 
 class Properties(models.Model):
