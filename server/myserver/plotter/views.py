@@ -14,6 +14,7 @@ def plotter(request):
     now = datetime.now(timezone.utc)
     the_exp = None
     for exp in Experiment.objects.all():
+        print(exp.pk)
         if now - exp.Datetime < timedelta(hours=0, minutes=0, seconds=3):
             the_exp = exp
 
@@ -26,3 +27,11 @@ def plotter(request):
     myProperty.save()
 
     return HttpResponse("speed {}, position {}".format(speed, position))
+
+
+def data(request):
+    pk = request.GET.get('pk')
+    pk = -1 if pk == None else int(pk)
+    if pk == -1:
+        return
+
