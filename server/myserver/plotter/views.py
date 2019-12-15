@@ -17,7 +17,7 @@ def plotter(request):
         if now - exp.Datetime < timedelta(hours=0, minutes=0, seconds=3):
             the_exp = exp
 
-    if the_exp == None:
+    if the_exp is None:
         the_exp = Experiment(number=0, Datetime=datetime.now((timezone.utc)))
         the_exp.save()
 
