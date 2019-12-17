@@ -24,7 +24,7 @@
 #include "guitimer.h"
 #include "ui_plotter.h"
 #include "google/protobuf/descriptor.h"
-#include "proto/cpp/messages_parsian_simurosot_worldmodel.pb.h"
+#include "proto/cpp/messages_motor.pb.h"
 #include <cmath>
 #include <QComboBox>
 #include <QMenu>
@@ -261,20 +261,20 @@ void Plotter::handleStatus(WorldModel *_status)
 
     //    if (status.has_worldmodel()) {
     //        const WorldModel &wm = status.worldmodel();
-    if (wm.has_ball()) {
-        parseMessage(wm.ball(), QStringLiteral("Ball"), m_time);
+    if (wm.has_motor()) {
+        parseMessage(wm.motor(), QStringLiteral("Motor"), m_time);
 
     }
 
-    for (int i = 0; i < wm.our_robots_size(); i++) {
-        const MovingObject &robot = wm.our_robots(i);
-        parseMessage(robot, QString(QStringLiteral("Our.%1")).arg(robot.id()), m_time);
-    }
+//    for (int i = 0; i < wm.our_robots_size(); i++) {
+//        const MovingObject &robot = wm.our_robots(i);
+//        parseMessage(robot, QString(QStringLiteral("Our.%1")).arg(robot.id()), m_time);
+//    }
 
-    for (int i = 0; i < wm.opp_robots_size(); i++) {
-        const MovingObject &robot = wm.opp_robots(i);
-        parseMessage(robot, QString(QStringLiteral("Opp.%1")).arg(robot.id()), m_time);
-    }
+//    for (int i = 0; i < wm.opp_robots_size(); i++) {
+//        const MovingObject &robot = wm.opp_robots(i);
+//        parseMessage(robot, QString(QStringLiteral("Opp.%1")).arg(robot.id()), m_time);
+//    }
 
     //    }
 

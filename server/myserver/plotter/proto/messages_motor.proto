@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+message MovingObject {
+	float anguleVelocity = 5;
+	float direction      = 6;
+}
+
+message WorldModel {
+	MovingObject motor = 1;
+}

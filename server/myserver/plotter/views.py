@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from datetime import datetime, timezone, timedelta
 from .models import Experiment, Properties
 import json
-from .proto import messages_parsian_simurosot_worldmodel_pb2
+from .proto import messages_motor_pb2
 import socket
 # Create your views here.
 
@@ -27,13 +27,11 @@ def plotter(request):
     myProperty = Properties(speed=speed, position=position, experiment=the_exp)
     myProperty.save()
 
-    worldmodel = messages_parsian_simurosot_worldmodel_pb2.WorldModel()
-    ball = worldmodel.ball
-    bpos = ball.pos
-    bpos.x = 1.
-    bpos.y = 2.
+    worldmodel = messages_motor_pb2.WorldModel()
+    motor = worldmodel.motor
+    motor.anguleVelocity = speed
+    motor.direction = position
     str = worldmodel.SerializeToString()
-    wm = messages_parsian_simurosot_worldmodel_pb2.WorldModel()
     UDP_IP = "127.0.0.1"
     UDP_PORT = 10040
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

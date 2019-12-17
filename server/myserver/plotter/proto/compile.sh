@@ -1,4 +1,2 @@
 #/bin/sh
-
-mkdir -p cpp
-protoc --python_out=cpp *.proto
+protoc --python_out=. *.proto

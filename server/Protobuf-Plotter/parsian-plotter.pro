@@ -21,10 +21,7 @@ SOURCES += main.cpp\
     timer.cpp \
     leaffilterproxymodel.cpp \
     plotter.cpp \
-    proto/cpp/messages_parsian_simurosot_data_wrapper.pb.cc \
-    proto/cpp/messages_parsian_simurosot_debugs.pb.cc \
-    proto/cpp/messages_parsian_simurosot_detection.pb.cc \
-    proto/cpp/messages_parsian_simurosot_worldmodel.pb.cc \
+    proto/cpp/messages_motor.pb.cc \
     mythread.cpp
 
 HEADERS  += mainwindow.h \
@@ -35,10 +32,7 @@ HEADERS  += mainwindow.h \
     timer.h \
     leaffilterproxymodel.h \
     plotter.h \
-    proto/cpp/messages_parsian_simurosot_data_wrapper.pb.h \
-    proto/cpp/messages_parsian_simurosot_debugs.pb.h \
-    proto/cpp/messages_parsian_simurosot_detection.pb.h \
-    proto/cpp/messages_parsian_simurosot_worldmodel.pb.h \
+    proto/cpp/messages_motor.pb.h \
     mythread.h
 
 FORMS    += \

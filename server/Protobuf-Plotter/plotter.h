@@ -21,7 +21,7 @@
 #ifndef PLOTTER_H
 #define PLOTTER_H
 
-#include "proto/cpp/messages_parsian_simurosot_data_wrapper.pb.h"
+#include "proto/cpp/messages_motor.pb.h"
 #include <QDialog>
 #include <QSet>
 #include <QStandardItemModel>

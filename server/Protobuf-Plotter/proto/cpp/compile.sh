@@ -1,4 +1,3 @@
 #/bin/sh
 
-mkdir -p cpp
-protoc --cpp_out=cpp *.proto
+protoc --cpp_out=. *.proto
