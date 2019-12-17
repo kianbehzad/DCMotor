@@ -3,8 +3,10 @@ from django.http import HttpResponse
 from datetime import datetime, timezone, timedelta
 from .models import Experiment, Properties
 import json
-from rest_framework.response import Response
+from .proto import messages_parsian_simurosot_worldmodel_pb2
+import socket
 # Create your views here.
+
 
 def plotter(request):
     speed = request.GET.get('speed')
@@ -12,11 +14,9 @@ def plotter(request):
     position = request.GET.get('position')
     position = 0. if position == None else float(position)
 
-
     now = datetime.now(timezone.utc)
     the_exp = None
     for exp in Experiment.objects.all():
-        print(exp.pk)
         if now - exp.Datetime < timedelta(hours=0, minutes=0, seconds=3):
             the_exp = exp
 
@@ -24,10 +24,20 @@ def plotter(request):
         the_exp = Experiment(number=0, Datetime=datetime.now((timezone.utc)))
         the_exp.save()
 
-
     myProperty = Properties(speed=speed, position=position, experiment=the_exp)
     myProperty.save()
 
+    worldmodel = messages_parsian_simurosot_worldmodel_pb2.WorldModel()
+    ball = worldmodel.ball
+    bpos = ball.pos
+    bpos.x = 1.
+    bpos.y = 2.
+    str = worldmodel.SerializeToString()
+    wm = messages_parsian_simurosot_worldmodel_pb2.WorldModel()
+    UDP_IP = "127.0.0.1"
+    UDP_PORT = 10040
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.sendto(str, (UDP_IP, UDP_PORT))
     return HttpResponse("speed {}, position {}".format(speed, position))
 
 
@@ -44,9 +54,10 @@ def data(request):
     if the_exp is None:
         return HttpResponse("INVALID PK")
 
-    dict = {"speeds": [], 'positions': []}
+    data_dict = {"speeds": [], 'positions': []}
     for prop in the_exp.all_properties.all():
-        dict["speeds"].append(prop.speed)
-        dict["positions"].append(prop.position)
+        data_dict["speeds"].append(prop.speed)
+        data_dict["positions"].append(prop.position)
 
-    return HttpResponse(json.dumps(dict), content_type="application/json")
+    return HttpResponse(json.dumps(data_dict), content_type="application/json")
+
