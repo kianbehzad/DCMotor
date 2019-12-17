@@ -29,6 +29,7 @@
 #include <QComboBox>
 #include <QMenu>
 #include <QSettings>
+#include <QDebug>
 #include <QStringBuilder>
 #include <unordered_map>
 
