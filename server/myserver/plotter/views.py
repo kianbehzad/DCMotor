@@ -46,7 +46,9 @@ def plotter(request):
 
 def get_data(request):
     pk = request.GET.get('pk')
+    length = request.GET.get('length')
     pk = -1 if pk == None else int(pk)
+    length = -1 if length == None else int(length)
     if pk == -1:
         return HttpResponse("NO PK")
 
@@ -61,12 +63,16 @@ def get_data(request):
     for prop in the_exp.all_properties.all():
         data_dict["speeds"].append(prop.speed)
         data_dict["positions"].append(prop.position)
-
+    if length != -1:
+        data_dict["speeds"] = data_dict["speeds"][0:length]
+        data_dict["positions"] = data_dict["positions"][0:length]
     return HttpResponse(json.dumps(data_dict), content_type="application/json")
 
 def plot_data(request):
     pk = request.GET.get('pk')
+    length = request.GET.get('length')
     pk = -1 if pk == None else int(pk)
+    length = -1 if length == None else int(length)
     if pk == -1:
         return HttpResponse("NO PK")
 
@@ -81,6 +87,9 @@ def plot_data(request):
     for prop in the_exp.all_properties.all():
         data_dict["speeds"].append(prop.speed)
         data_dict["positions"].append(prop.position)
+    if length != -1:
+        data_dict["speeds"] = data_dict["speeds"][0:length]
+        data_dict["positions"] = data_dict["positions"][0:length]
 
     fig = plt.figure()
     ax = plt.subplot(111)
