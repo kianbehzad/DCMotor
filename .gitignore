@@ -298,5 +298,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+#############################
 
-
+motor/Debug/
+motor/Release/
