@@ -5,7 +5,9 @@ from .models import Experiment, Properties
 import json
 from .proto import messages_motor_pb2
 import socket
+import matplotlib
 import matplotlib.pyplot as plt
+matplotlib.use('agg')
 import matplotlib.ticker as ticker
 import os
 # Create your views here.
@@ -93,6 +95,7 @@ def plot_data(request):
 
     fig = plt.figure()
     ax = plt.subplot(111)
+
     # time = [i for i in range(len(data_dict["speeds"]))]
     data_size = len(data_dict["speeds"])
     ax.plot(data_dict["speeds"], 'r', label="speed")
