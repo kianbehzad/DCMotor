@@ -10,7 +10,8 @@ class Experiment(models.Model):
     Datetime = models.DateTimeField()
 
     def __str__(self):
-        return str(self.Datetime + timedelta(hours=3, minutes=30)) + " --> " + str(self.pk)
+        time = self.Datetime + timedelta(hours=3, minutes=30)
+        return str(time.strftime("%H:%M:%S")) + " --> " + str(self.pk)
 
 
 class Properties(models.Model):
