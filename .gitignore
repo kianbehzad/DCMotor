@@ -6,6 +6,7 @@
 .LSOverride
 server/env
 server/.idea
+server/Protobuf-Plotter/parsian-plotter
 # Icon must end with two \r
 Icon
 
