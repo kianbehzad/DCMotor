@@ -21,9 +21,11 @@ def plotter(request):
             the_exp = exp
 
     if the_exp is None:
-        the_exp = Experiment(number=0, Datetime=datetime.now((timezone.utc)))
+        the_exp = Experiment(number=0, Datetime=datetime.now(timezone.utc))
         the_exp.save()
 
+    the_exp.Datetime = datetime.now(timezone.utc)
+    the_exp.save()
     myProperty = Properties(speed=speed, position=position, experiment=the_exp)
     myProperty.save()
 
