@@ -47,7 +47,8 @@ UART_HandleTypeDef huart1;
 /* USER CODE BEGIN PV */
 #define NumByte 3
 uint8_t Rdata[NumByte];
-
+enum State {Start = 1, Stop = 0};
+enum State state = Stop;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -65,6 +66,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   HAL_UART_Transmit(&huart1, "incomming: ", 11, 12);
   HAL_UART_Transmit(&huart1, Rdata, NumByte, 12);
   HAL_UART_Transmit(&huart1, "\n", 1, 12);
+
+  if(!strcmp(Rdata, "sta"))
+	  state = Start;
+  else if(!strcmp(Rdata, "stp"))
+	  state = Stop;
+
 }
 
 /* USER CODE END 0 */
@@ -108,6 +115,9 @@ int main(void)
   while (1)
   {
       HAL_UART_Receive_IT(&huart1,Rdata,NumByte);
+      if(state == Stop)
+    	  continue;
+      HAL_UART_Transmit(&huart1, "start-", 6, 12);
 	  HAL_Delay(1000);
     /* USER CODE END WHILE */
 
