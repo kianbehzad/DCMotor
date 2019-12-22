@@ -62,7 +62,9 @@ static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN 0 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-  HAL_UART_Transmit(&huart1, "incomming\n", 10, 12);
+  HAL_UART_Transmit(&huart1, "incomming: ", 11, 12);
+  HAL_UART_Transmit(&huart1, Rdata, NumByte, 12);
+  HAL_UART_Transmit(&huart1, "\n", 1, 12);
 }
 
 /* USER CODE END 0 */
