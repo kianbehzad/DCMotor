@@ -45,6 +45,8 @@
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
+#define NumByte 3
+uint8_t Rdata[NumByte];
 
 /* USER CODE END PV */
 
@@ -58,6 +60,10 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  HAL_UART_Transmit(&huart1, "incomming\n", 10, 12);
+}
 
 /* USER CODE END 0 */
 
@@ -99,7 +105,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_UART_Transmit(&huart1, "kian test\n", 10, 12);
+      HAL_UART_Receive_IT(&huart1,Rdata,NumByte);
 	  HAL_Delay(1000);
     /* USER CODE END WHILE */
 
