@@ -119,6 +119,11 @@ void ESP_Configure()
 	HAL_UART_Transmit(&huart1, "********************\n", 21, 12);
 
 }
+
+void ESP_Client_Send(uint8_t speed, uint8_t position)
+{
+
+}
 /* USER CODE END 0 */
 
 /**
@@ -154,6 +159,7 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   ESP_Configure();
+  ESP_Client_Send(3, 3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -163,7 +169,7 @@ int main(void)
       HAL_UART_Receive_IT(&huart1,Rdata,NumByte);
       if(state == Stop)
     	  continue;
-      HAL_UART_Transmit(&huart1, "start-", 6, 12);
+      HAL_UART_Transmit(&huart1, "start\n", 6, 12);
 	  HAL_Delay(1000);
     /* USER CODE END WHILE */
 
