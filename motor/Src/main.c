@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "string.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -46,6 +47,9 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+const uint8_t SSID[] = "KIAKIA-2.4";
+const uint8_t PASSWORD[] ="M206F29685k0073k0077";
+
 #define NumByte 3
 uint8_t Rdata[NumByte];
 enum State {Start = 1, Stop = 0};
@@ -76,6 +80,38 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 }
 
+void ESP_Configure()
+{
+	//OK	->	+7
+	HAL_UART_Transmit(&huart1, "ESP Configure:\n", 15, 12);
+	const int mySize = 150;
+	uint8_t str[mySize];
+
+	HAL_UART_Transmit(&huart2, "AT+CWMODE=3\r\n", 13, 12);
+	HAL_UART_Receive(&huart2, str, 13 + 7, 700);
+	HAL_UART_Transmit(&huart1, str, 13 + 7, 12);
+
+	char* wifi;
+	uint8_t wifi_size = 10+strlen(SSID)+3+strlen(PASSWORD)+3;
+	wifi = malloc(wifi_size + 1);
+	strcpy(wifi, "AT+CWJAP=\"");
+	strcat(wifi, SSID);
+	strcat(wifi, "\",\"");
+	strcat(wifi, PASSWORD);
+	strcat(wifi, "\"\r\n");
+
+	//connected	->	+32
+	HAL_UART_Transmit(&huart2, wifi, wifi_size, 12);
+	HAL_UART_Receive(&huart2, str, wifi_size + 15 + 16 + 13 + 9, 10000);
+	HAL_UART_Transmit(&huart1, str, wifi_size + 15 + 16 + 13 + 9, 12);
+
+	free(wifi);
+
+	HAL_UART_Transmit(&huart2, "AT+CIFSR\r\n", 10, 12);
+	HAL_UART_Receive(&huart2, str, 10 + 27 + 34 + 30 + 35 + 9, 1000);
+	HAL_UART_Transmit(&huart1, str, 10 + 27 + 34 + 30 + 35 + 9, 12);
+
+}
 /* USER CODE END 0 */
 
 /**
@@ -110,7 +146,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  ESP_Configure();
   /* USER CODE END 2 */
 
   /* Infinite loop */
