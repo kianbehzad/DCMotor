@@ -77,12 +77,18 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	  state = Start;
   else if(!strcmp(Rdata, "stp"))
 	  state = Stop;
+  else if(!strcmp(Rdata, "esp"))
+  {
+	  state = Stop;
+	  ESP_Configure();
+  }
 
 }
 
 void ESP_Configure()
 {
 	//OK	->	+7
+	HAL_UART_Transmit(&huart1, "********************\n", 21, 12);
 	HAL_UART_Transmit(&huart1, "ESP Configure:\n", 15, 12);
 	const int mySize = 150;
 	uint8_t str[mySize];
@@ -104,12 +110,13 @@ void ESP_Configure()
 	HAL_UART_Transmit(&huart2, wifi, wifi_size, 12);
 	HAL_UART_Receive(&huart2, str, wifi_size + 15 + 16 + 13 + 9, 10000);
 	HAL_UART_Transmit(&huart1, str, wifi_size + 15 + 16 + 13 + 9, 12);
-
 	free(wifi);
 
 	HAL_UART_Transmit(&huart2, "AT+CIFSR\r\n", 10, 12);
-	HAL_UART_Receive(&huart2, str, 10 + 27 + 34 + 30 + 35 + 9, 1000);
-	HAL_UART_Transmit(&huart1, str, 10 + 27 + 34 + 30 + 35 + 9, 12);
+	HAL_UART_Receive(&huart2, str, 10 + 27 + 34 + 30 + 35 + 7, 5000);
+	HAL_UART_Transmit(&huart1, str, 10 + 27 + 34 + 30 + 35 + 7, 12);
+	HAL_UART_Transmit(&huart1, "\n", 1, 12);
+	HAL_UART_Transmit(&huart1, "********************\n", 21, 12);
 
 }
 /* USER CODE END 0 */
