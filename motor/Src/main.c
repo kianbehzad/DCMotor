@@ -130,6 +130,7 @@ void ESP_Client_Send(double speed, double position)
     char speed_dd_tmp [5];
     sprintf(speed_ii, "%i", speed_integer);
     sprintf(speed_dd_tmp, "%i", speed_decimal);
+    // in case of having 0 after .
     if(speed_decimal < 10)
     {
     	strcpy(speed_dd, "0");
@@ -151,6 +152,7 @@ void ESP_Client_Send(double speed, double position)
     char position_dd_tmp [5];
     sprintf(position_ii, "%i", position_integer);
     sprintf(position_dd_tmp, "%i", position_decimal);
+    // in case of having 0 after .
     if(position_decimal < 10)
 	{
 		strcpy(position_dd, "0");
@@ -212,7 +214,7 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 //  ESP_Configure();
-  ESP_Client_Send(3.56, 1.96);
+  ESP_Client_Send(3.000, 1.00);
   /* USER CODE END 2 */
 
   /* Infinite loop */
