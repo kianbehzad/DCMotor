@@ -20,11 +20,11 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "string.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <string.h>
+#include <float.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -120,8 +120,61 @@ void ESP_Configure()
 
 }
 
-void ESP_Client_Send(uint8_t speed, uint8_t position)
+void ESP_Client_Send(double speed, double position)
 {
+
+    uint8_t speed_integer = (uint8_t)speed;
+    uint8_t speed_decimal = (speed - speed_integer)*100;
+    char speed_ii [5];
+    char speed_dd [5];
+    char speed_dd_tmp [5];
+    sprintf(speed_ii, "%i", speed_integer);
+    sprintf(speed_dd_tmp, "%i", speed_decimal);
+    if(speed_decimal < 10)
+    {
+    	strcpy(speed_dd, "0");
+    	strcat(speed_dd, speed_dd_tmp);
+    }
+    else
+    	strcpy(speed_dd, speed_dd_tmp);
+    const uint8_t speed_intSize = strlen(speed_ii);
+    const uint8_t speed_decSize = strlen(speed_dd);
+    uint8_t speed_c[speed_intSize + speed_decSize];
+    strcpy(speed_c, speed_ii);
+    strcat(speed_c, ".");
+    strcat(speed_c, speed_dd);
+
+    uint8_t position_integer = (uint8_t)position;
+    uint8_t position_decimal = (position - position_integer)*100;
+    char position_ii [5];
+    char position_dd [5];
+    char position_dd_tmp [5];
+    sprintf(position_ii, "%i", position_integer);
+    sprintf(position_dd_tmp, "%i", position_decimal);
+    if(position_decimal < 10)
+	{
+		strcpy(position_dd, "0");
+		strcat(position_dd, position_dd_tmp);
+	}
+	else
+		strcpy(position_dd, position_dd_tmp);
+    const uint8_t position_intSize = strlen(position_ii);
+    const uint8_t position_decSize = strlen(position_dd);
+    uint8_t position_c[position_intSize + position_decSize];
+    strcpy(position_c, position_ii);
+    strcat(position_c, ".");
+    strcat(position_c, position_dd);
+
+    //	GET /plotter/?speed=9&position=8 HTTP/1.1		20 + speed + 10 + position + 9
+    char request[20 + strlen(speed_c) + 10 + strlen(position_c) + 9];
+    strcpy(request, "GET /plotter/?speed=");
+    strcat(request, speed_c);
+    strcat(request, "&position=");
+    strcat(request, position_c);
+    strcat(request, " HTTP/1.1");
+
+	HAL_UART_Transmit(&huart1, request, strlen(request), 12);
+
 
 }
 /* USER CODE END 0 */
@@ -158,8 +211,8 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  ESP_Configure();
-  ESP_Client_Send(3, 3);
+//  ESP_Configure();
+  ESP_Client_Send(3.56, 1.96);
   /* USER CODE END 2 */
 
   /* Infinite loop */
